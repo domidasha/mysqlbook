@@ -109,24 +109,51 @@ echo $yellow;
 $anotherComplexArray = array("stone"=>'grey', "grass"=>'green');
 extract($anotherComplexArray, EXTR_PREFIX_ALL, 'this' );
 echo " ".$this_grass." is her favourite color";
+?>
 
+<html>
+<head>
 
+</head>
 
+<body>
+	<form>
+		<p>Name</p>
+		<input name="name" type="text">
+		<p>email</p>
+		<input name="email" type="email">
+		<p>Comment</p>
+		<input name="feedback" type="textarea"><br>
+		
+		<input type="submit" value="send"> 
+		
+	</form>
+</body>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<?php 
+if (isset($_POST)) {
+	echo $name;
+}
+else {
+	echo 'empty';
+}
 
 
 ?>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

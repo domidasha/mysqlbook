@@ -1,8 +1,18 @@
 <?php
+
+class textToSmallException extends Exception {
+	function ___toString() {
+		return 'fileOpenException '.$this->getCode()
+		.':'.$this->getMessage()."<br>"."in".$this->getFile().', line:'.$this->getLine().
+		'<br>';
+	}
+}
+
+require_once 'functions.php';
 //simple sort
-$products = array ('Mouse', 'Lama', 'House', 'Bird');
-sort ($products);
-print_r($products);
+$ani = array ('Mouse', 'Lama', 'House', 'Bird');
+sort ($ani);
+print_r($ani);
 
 
 $numbers = array('17', '71', '5', '11', 'pup', '2');
@@ -109,6 +119,66 @@ echo $yellow;
 $anotherComplexArray = array("stone"=>'grey', "grass"=>'green');
 extract($anotherComplexArray, EXTR_PREFIX_ALL, 'this' );
 echo " ".$this_grass." is her favourite color";
+
+
+$fNum = 0.005;
+$sNum = 0.045;
+
+printf("Summa: %.2f (with delivery: %.2f)",
+		$fNum, $sNum);
+$smallText = "this is a fairytail about  alice";
+echo ucwords($smallText);
+
+$newText = "yourlittlebee@xxx.ua";
+$newText1 = addslashes($newText);
+echo stripcslashes($newText1);
+
+$email_array = explode('@', $newText);
+echo '<br>'.$email_array[1];
+$bigLetters = 'YOU WILL NEVER WALK ALONE';
+echo strtolower($bigLetters);
+
+$newAni = implode(" : ", $ani);
+echo "\n".$newAni;
+
+echo substr($bigLetters, -16);
+
+$anotherBigLetters = "So Create";
+echo strcmp( $anotherBigLetters, $bigLetters);
+echo "\n ssthe number of symbols in 'SO CREATE' = ".strlen( $anotherBigLetters);
+
+if (strstr($anotherBigLetters, 'create')) {
+	echo "create is there";
+} else {
+	echo "create is not there";
+}
+
+echo "<hr>";
+$alice = 'It\'s no use going back to yesterday, because I was a different person then';
+echo strpos($alice, 'i', 3);
+
+$result = strpos($alice, "I");
+if ($result === false) {
+	echo "no I";
+}
+else {
+	echo "\n\"I\" is there";
+}
+
+echo $alice.'<br>';
+$yesterday = "yesterday";
+$back = "back";
+$tom = str_replace($yesterday,'tomorrow', $alice);
+echo str_replace('back','forward', $tom);
+
+
+$regular = "5aa";
+if (eregi('^[a-z]', $regular)) {
+	echo "vse ok";
+} else {
+	echo "ne ok";
+}
+
 ?>
 
 <html>
@@ -117,13 +187,15 @@ echo " ".$this_grass." is her favourite color";
 </head>
 
 <body>
-	<form>
+	<form action="index.php" method="post">
 		<p>Name</p>
 		<input name="name" type="text">
 		<p>email</p>
 		<input name="email" type="email">
 		<p>Comment</p>
-		<input name="feedback" type="textarea"><br>
+		<textarea name="feedback" type="textarea">
+		</textarea>
+		<br>
 		
 		<input type="submit" value="send"> 
 		
@@ -131,13 +203,52 @@ echo " ".$this_grass." is her favourite color";
 </body>
 
 <?php 
-if (isset($_POST)) {
-	echo $name;
-}
-else {
-	echo 'empty';
-}
 
+
+	if($_SERVER['REQUEST_METHOD'] == 'POST') {
+		$name = $_POST['name'];
+		$email = $_POST['email'];
+		$feedback = $_POST['feedback'];
+		
+		
+		try {
+			if ($name=="") {
+				throw new textToSmallException();
+			}
+		}
+		catch (textToSmallException $e){
+			echo "mirmur";
+		}
+		
+		//$name = trim($name);
+				
+		$todoadress = 'daria.stukal@gmail.com';
+		$subject = 'обратная связь';
+		$mailcontent = "one \tHello";
+// 		$mailcontent = 'Name: '.$name."\n".
+// 						"Email: ".$email."\n".
+// 						"Comments: \n".$feedback."\n";
+		$fromaddress = "From: webserver@example.com";
+		
+		if(eregi('dasha|alice|varvara', $email)) {
+			echo "hello, girls!";
+		}
+		if (eregi('vova|denis|pinokio', $email)) {
+			echo "hello, boys!";
+		}
+		else {
+			echo "hello aliens!";
+		}
+		
+		mail($todoadress, $subject, $mailcontent, $fromaddress);
+		
+		nl2br($mailcontent);
+		print_r($mailcontent);
+	}
+	else {
+		echo 'empty';
+	}
+	
 
 ?>
 
